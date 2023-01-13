@@ -23,7 +23,6 @@ _CLEANUP_() {
        	rm -rf output
        	rm -rf gen
        	rm -rf obj
-	printf "\\n\\n%s\\n\\n" "Share https://wiki.termux.com/wiki/Development everwhere🌎🌍🌏🌐!"
 }
 
 _UNTP_() {
@@ -51,7 +50,6 @@ aapt package -f -m \
 printf "%s\\n\\n" "aapt: done"
 
 
-printf "%s\\n" "ecj: begun..."
 for JAVAFILE in $(find . -type f -name "*.java")
 do
        	JAVAFILES="$JAVAFILES $JAVAFILE"
@@ -60,12 +58,10 @@ ecj -d obj -sourcepath . $JAVAFILES || _UNTP_
 printf "%s\\n\\n" "ecj: done"
 
 
-printf "%s\\n" "dx: started..."
 dx --dex --output=output/classes.dex obj || _UNTP_
 printf "%s\\n\\n" "dx: done"
 
 
-printf "%s\\n" "Making $PKGNAME.apk..."
 aapt package -f \
        	--min-sdk-version 1 \
        	--target-sdk-version 23 \
@@ -75,19 +71,13 @@ aapt package -f \
        	-F output/"$PKGNAME.apk" || _UNTP_
 
 
-printf "\n%s\\n" "Adding classes.dex to $PKGNAME.apk..."
 cd output || _UNTP_
 aapt add -f "$PKGNAME.apk" classes.dex || { cd ..; _UNTP_; }
 
 
-printf "\n%s" "Signing $PKGNAME.apk: "
 
-#zipalign -f -c 4 "output/$PKGNAME.apk"
 
 apksigner sign --ks ../somekey.keystore "$PKGNAME.apk"
-#printf "%s\\n" "DONE"
-#printf "%s" "Verifying $PKGNAME.apk: "
-#apksigner verify --verbose "$PKGNAME.apk" || { cd ..; _UNTP_; }
 printf "%s\\n" "DONE"
 
 cd ..

@@ -1,9 +1,9 @@
-package com.davidykay.hello;
+package com.example.hello;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-public class HelloMavenActivity extends Activity {
+public class HelloActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
